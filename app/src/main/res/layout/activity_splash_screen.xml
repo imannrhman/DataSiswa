@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreen">
 
-
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/student1"
+        />
 
 </RelativeLayout>

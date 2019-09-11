@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DashboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/img_profile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/student1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="126dp"
+        />
+        <Button
+            android:id="@+id/btn_lihat_data"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/img_profile"
+            android:text="Lihat Data"
+            android:textColor="@android:color/white"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:background="@drawable/stylebutton1"
+            />
+    <Button
+        android:id="@+id/btn_input_data"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/btn_lihat_data"
+        android:text="Input Data"
+        android:textColor="@android:color/white"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/stylebutton2"
+        />
+    <Button
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/btn_input_data"
+        android:text="Input Data"
+        android:textColor="@android:color/white"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@drawable/stylebutton3"
+        />
 
-</FrameLayout>
+
+</RelativeLayout>

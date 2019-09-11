@@ -3,12 +3,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".InputFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/txt_nomor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nomor"
+        android:textSize="20sp"
+        android:layout_marginTop="26dp"
+        android:layout_marginLeft="25dp"/>
+
+    <EditText
+        android:id="@+id/edt_nomor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_marginLeft="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/txt_nama"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama"
+        android:textSize="20sp"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="25dp"/>
+
+    <EditText
+        android:id="@+id/edt_nama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_marginLeft="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="135dp"/>
+
+    <TextView
+        android:id="@+id/txt_ttl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="215dp"
+        android:text="Tanggal Lahir"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/edt_ttl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_marginLeft="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="230dp"/>
+
+    <TextView
+        android:id="@+id/txt_jk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="300dp"
+        android:text="Jenis Kelamin"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/edt_jk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_marginLeft="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="315dp"/>
+
+    <TextView
+        android:id="@+id/txt_alamat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="390dp"
+        android:text="Alamat"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/edt_alamat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:layout_marginLeft="25dp"
+        android:textSize="20sp"
+        android:layout_marginTop="405dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="290dp"
+
+        android:layout_marginTop="500dp"/>
+
+    <TextView
+        android:id="@+id/txt_simpan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="320dp"
+        android:layout_marginTop="500dp"
+        android:text="SIMPAN"
+        android:textSize="20sp" />
+
+
+
+
+
+
 
 </FrameLayout>

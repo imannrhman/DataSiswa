@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -33,10 +35,16 @@ public class MainActivity extends AppCompatActivity {
                 return  super.onOptionsItemSelected(item);
         }
     }
-    public void showUpButton(){
+    public void showUpButton(String title){
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
-    public void hideUpButton(){
+    public void hideUpButton()
+    {
+        getSupportActionBar().setTitle("Data Siswa");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 

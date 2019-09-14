@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Data Siswa</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description1">BackEnd Developer</string>
-    <string name="description2">FrontkEnd Developer</string>
+    <string name="description2">FrontEnd Developer</string>
+
+    <string-array name="list">
+        <item>Laki-Laki</item>
+        <item>Perempuan</item>
+    </string-array>
 
 </resources>

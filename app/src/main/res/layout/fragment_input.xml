@@ -67,7 +67,7 @@
         <EditText
             android:inputType="datetime"
             android:id="@+id/edt_ttl"
-            android:editable="false"
+            android:focusable="false"
             android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000"
+            android:entries="@array/list"
             android:textSize="20sp" />
 
         <TextView

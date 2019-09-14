@@ -1,8 +1,10 @@
 package com.belajar.datasiswa;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,13 +16,16 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -32,6 +37,8 @@ public class InputFragment extends Fragment {
     String action ;
     Button inputData;
     Siswa siswaTadi;
+    AlertDialog alertDialog;
+    int chekeditem = -1;
     final Calendar myCalendar = Calendar.getInstance();
     EditText edtNomor,edtNama,edtTanggalLahir,edtJenisKelamin,edtAlamat;
 
@@ -64,7 +71,7 @@ public class InputFragment extends Fragment {
         super.onResume();
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
-            activity.showUpButton();
+            activity.showUpButton(action + " Data");
         }
     }
 
@@ -74,6 +81,8 @@ public class InputFragment extends Fragment {
         context = getActivity();
         inputData = view.findViewById(R.id.btn_input);
         edtTanggalLahir = view.findViewById(R.id.edt_ttl);
+
+        //Memasukan Adapter pada Spinner
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -84,11 +93,13 @@ public class InputFragment extends Fragment {
             }
 
         };
-        edtTanggalLahir.setEnabled(false);
+
+        edtTanggalLahir.setClickable(true);
         edtTanggalLahir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatePickerDialog(context,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                edtTanggalLahir.setFocusable(true);
             }
         });
         contentFilter(view);
@@ -104,43 +115,78 @@ public class InputFragment extends Fragment {
         edtNomor = view.findViewById(R.id.edt_nomor);
         edtNama = view.findViewById(R.id.edt_nama);
         edtJenisKelamin = view.findViewById(R.id.edt_jk);
+        edtJenisKelamin.setClickable(true);
+        edtJenisKelamin.setFocusable(false);
+        edtJenisKelamin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(edtJenisKelamin);
+            }
+        });
         edtAlamat = view.findViewById(R.id.edt_alamat);
         if (action.equals("Input")){
              final DatabaseHelper db = new DatabaseHelper(context);
              final Siswa siswa = new Siswa();
-            inputData.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    siswa.setNomor(Integer.parseInt(edtNomor.getText().toString()));
-                    siswa.setNama(edtNama.getText().toString());
-                    siswa.setTanggalLahir(edtTanggalLahir.getText().toString());
-                    siswa.setJenisKelamin(edtJenisKelamin.getText().toString());
-                    siswa.setAlamat(edtAlamat.getText().toString());
-                    db.insert(siswa);
-                    getActivity().getSupportFragmentManager().popBackStackImmediate();
-                }
-            });
-                   }
+                    inputData.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                                if(edtNama.getText().toString().equals("")){
+                                    edtNama.setError("Nama harus Diisi");
+                                }
+                                if (edtNomor.getText().toString().equals("")){
+                                    edtNomor.setError("Nomor Harus Diisi");
+                                }else if(cekNomor(db)){
+                                    edtNomor.setError("Nomor telah digunakan");
+                                 }
+                                else{
+                                    siswa.setNomor(Integer.parseInt(edtNomor.getText().toString()));
+                                    siswa.setNama(edtNama.getText().toString());
+                                    siswa.setTanggalLahir(edtTanggalLahir.getText().toString());
+                                    siswa.setJenisKelamin(edtJenisKelamin.getText().toString());
+                                    siswa.setAlamat(edtAlamat.getText().toString());
+                                    db.insert(siswa);
+                                    getActivity().getSupportFragmentManager().popBackStackImmediate();
+                                }
+
+                            }
+                    });
+
+        }
         else if (action.equals("Update")){
             final DatabaseHelper db = new DatabaseHelper(context);
             final Siswa siswa = new Siswa();
             edtNomor.setText(String.valueOf(siswaTadi.getNomor()));
             edtNomor.setEnabled(false);
            edtNama.setText(siswaTadi.getNama());
+          if (siswaTadi.getJenisKelamin().equals("Laki-Laki")){
+              chekeditem = 0;
+          }else{
+              chekeditem = 1;
+          }
+
            edtTanggalLahir.setText(siswaTadi.getTanggalLahir());
            edtJenisKelamin.setText(siswaTadi.getJenisKelamin());
            edtAlamat.setText(siswaTadi.getAlamat());
            inputData.setText("Update Data");
-            inputData.setOnClickListener(new View.OnClickListener() {
+            inputData.setOnClickListener(
+                    new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    siswa.setNomor(Integer.parseInt(edtNomor.getText().toString()));
-                    siswa.setNama(edtNama.getText().toString());
-                    siswa.setTanggalLahir(edtTanggalLahir.getText().toString());
-                    siswa.setJenisKelamin(edtJenisKelamin.getText().toString());
-                    siswa.setAlamat(edtAlamat.getText().toString());
-                    db.update(siswa);
-                }
+                    if(edtNama.getText().toString().equals("")){
+                        edtNama.setError("Nama harus Diisi");
+                    }
+                    if (edtNomor.getText().toString().equals("")){
+                        edtNomor.setError("Nomor Harus Diisi");
+                    }else{
+                        siswa.setNomor(Integer.parseInt(edtNomor.getText().toString()));
+                        siswa.setNama(edtNama.getText().toString());
+                        siswa.setTanggalLahir(edtTanggalLahir.getText().toString());
+                        siswa.setJenisKelamin(edtJenisKelamin.getText().toString());
+                        siswa.setAlamat(edtAlamat.getText().toString());
+                        db.update(siswa);
+                        getActivity().getSupportFragmentManager().popBackStackImmediate();
+                    }
+                    }
             });
 
         }else if(action.equals("Lihat")){
@@ -158,5 +204,41 @@ public class InputFragment extends Fragment {
             edtAlamat.setEnabled(false);
             inputData.setVisibility(View.INVISIBLE);
         }
+    }
+    public void showDialog(final EditText editText){
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        CharSequence[] values = {"Laki-Laki","Perempuan"};
+        builder.setTitle("Pilih Jenis Kelamin");
+
+        builder.setSingleChoiceItems(values, chekeditem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int item) {
+                switch(item)
+                {
+                    case 0:
+                        editText.setText("Laki-Laki");
+                        chekeditem = 0;
+                        break;
+                    case 1:
+                        editText.setText("Perempuan");
+                        chekeditem = 1;
+                        break;
+                }
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public boolean cekNomor(DatabaseHelper db){
+        boolean betul = false;
+        for (int i = 0; i < db.selectUserData().size();i++){
+            if (Integer.parseInt(edtNomor.getText().toString()) == db.selectUserData().get(i).getNomor()){
+            betul = true;
+            }
+        }
+        return betul;
     }
 }

@@ -64,7 +64,8 @@ public class ListDataFragment extends Fragment {
         super.onResume();
         MainActivity activity = (MainActivity) getActivity();
         if (activity != null) {
-            activity.showUpButton();
+
+            activity.showUpButton("List Siswa");
         }
     }
 
@@ -72,6 +73,7 @@ public class ListDataFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
+
         btnInput = view.findViewById(R.id.btn_input_list);
         btnInput.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +129,7 @@ public class ListDataFragment extends Fragment {
                             case 2:
                                 DatabaseHelper db = new DatabaseHelper(context);
                                 db.delete(siswa.getNomor());
+                                setupRecyclerView();
                                 break;
                         }
                     }

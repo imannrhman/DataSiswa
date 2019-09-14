@@ -25,6 +25,15 @@ Button btnLihatData,btnInputData,btnInfo;
         // Required empty public constructor
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity)getActivity();
+        if (activity != null) {
+            activity.hideUpButton();
+
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +69,8 @@ Button btnLihatData,btnInputData,btnInfo;
                 setFragment(fragment);
                 break;
             case R.id.btn_info:
-
+                fragment = new InfoFragment();
+                setFragment(fragment);
                 break;
         }
     }
@@ -68,7 +78,7 @@ Button btnLihatData,btnInputData,btnInfo;
     public  void setFragment(Fragment fragment){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.framecontainer,fragment);
+        fragmentTransaction.replace(R.id.framecontainer,fragment).addToBackStack(null);
         fragmentTransaction.commit();
     }
 }

@@ -12,6 +12,7 @@
         tools:listitem="@layout/item_siswa"
         />
     <Button
+        android:id="@+id/btn_input_list"
         android:drawableStart="@drawable/ic_add_circle_outline_black_24dp"
         android:layout_margin="26dp"
         android:layout_alignParentBottom="true"

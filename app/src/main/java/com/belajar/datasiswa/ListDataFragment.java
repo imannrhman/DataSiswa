@@ -7,11 +7,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,6 +30,7 @@ import java.util.List;
 public class ListDataFragment extends Fragment {
     RecyclerView recyclerView;
     Context context;
+    Button btnInput;
     RecyclerView.LayoutManager layoutManager;
     List<Siswa> listSiswa;
 
@@ -43,9 +47,39 @@ public class ListDataFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()){
+                case android.R.id.home:
+                    getActivity().onBackPressed();
+
+                    return  true;
+                default:
+                    return  super.onOptionsItemSelected(item);
+            }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.showUpButton();
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
+        btnInput = view.findViewById(R.id.btn_input_list);
+        btnInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputFragment fragment = new InputFragment("Input",new Siswa());
+                setFragment(fragment);
+            }
+        });
         recyclerView = view.findViewById(R.id.recyclerview);
         layoutManager = new LinearLayoutManager(context);
         setupRecyclerView();
@@ -56,6 +90,7 @@ public class ListDataFragment extends Fragment {
         SiswaAdapter adaper = new SiswaAdapter(context,listSiswa);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adaper);
+
         adaper.setOnItemClickCallback(new SiswaAdapter.OnItemClickCallback() {
             @Override
             public void onItemClicked(Siswa siswa) {
@@ -101,7 +136,7 @@ public class ListDataFragment extends Fragment {
     public  void setFragment(Fragment fragment){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.framecontainer,fragment);
+        fragmentTransaction.replace(R.id.framecontainer,fragment).addToBackStack(null);
         fragmentTransaction.commit();
     }
 

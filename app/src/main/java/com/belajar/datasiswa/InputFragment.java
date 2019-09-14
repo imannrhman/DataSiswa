@@ -1,6 +1,7 @@
 package com.belajar.datasiswa;
 
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -10,11 +11,17 @@ import androidx.fragment.app.Fragment;
 
 import android.renderscript.ScriptGroup;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -25,6 +32,7 @@ public class InputFragment extends Fragment {
     String action ;
     Button inputData;
     Siswa siswaTadi;
+    final Calendar myCalendar = Calendar.getInstance();
     EditText edtNomor,edtNama,edtTanggalLahir,edtJenisKelamin,edtAlamat;
 
     public InputFragment(String action,Siswa siswa) {
@@ -32,6 +40,16 @@ public class InputFragment extends Fragment {
         this.siswaTadi = siswa;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+               getActivity().onBackPressed();
+                return  true;
+            default:
+                return  super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,18 +58,51 @@ public class InputFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_input, container, false);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.showUpButton();
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getActivity();
         inputData = view.findViewById(R.id.btn_input);
+        edtTanggalLahir = view.findViewById(R.id.edt_ttl);
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR,year);
+                myCalendar.set(Calendar.MONTH,monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                updateLabel();
+            }
+
+        };
+        edtTanggalLahir.setEnabled(false);
+        edtTanggalLahir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(context,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
         contentFilter(view);
+    }
+
+    private void updateLabel() {
+            String myFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        edtTanggalLahir.setText(sdf.format(myCalendar.getTime()));
     }
 
     private void contentFilter(View view) {
         edtNomor = view.findViewById(R.id.edt_nomor);
         edtNama = view.findViewById(R.id.edt_nama);
-        edtTanggalLahir = view.findViewById(R.id.edt_ttl);
         edtJenisKelamin = view.findViewById(R.id.edt_jk);
         edtAlamat = view.findViewById(R.id.edt_alamat);
         if (action.equals("Input")){
@@ -66,9 +117,10 @@ public class InputFragment extends Fragment {
                     siswa.setJenisKelamin(edtJenisKelamin.getText().toString());
                     siswa.setAlamat(edtAlamat.getText().toString());
                     db.insert(siswa);
+                    getActivity().getSupportFragmentManager().popBackStackImmediate();
                 }
             });
-        }
+                   }
         else if (action.equals("Update")){
             final DatabaseHelper db = new DatabaseHelper(context);
             final Siswa siswa = new Siswa();
@@ -90,6 +142,7 @@ public class InputFragment extends Fragment {
                     db.update(siswa);
                 }
             });
+
         }else if(action.equals("Lihat")){
             ImageView img = view.findViewById(R.id.student);
             img.setVisibility(View.VISIBLE);

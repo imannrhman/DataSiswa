@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:textColor="#000"
             android:textSize="20sp"
+            android:inputType="numberDecimal"
             />
 
         <TextView
@@ -64,7 +65,10 @@
             android:textSize="20sp" />
 
         <EditText
+            android:inputType="datetime"
             android:id="@+id/edt_ttl"
+            android:editable="false"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000"
